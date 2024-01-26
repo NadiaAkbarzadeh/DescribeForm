@@ -1,0 +1,18 @@
+﻿@model IEnumerable<DescribeForm.Models.Describe>
+
+
+    
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        
+        <td>
+            <i class="fa fa-pencil button" data-toggle="tooltip"  title="Edit" style="color:blue;" onclick="edit(@item.Id)"></i>
+            <i class="fa fa-trash-o button" data-toggle="tooltip" title="Delete" style="color:red;" onclick="deleteDescribe(@item.Id, '@item.Name', event)"></i>
+        </td>
+    </tr>
+}

@@ -1,0 +1,32 @@
+﻿@using DescribeForm.Models.Command
+@model RegisterDescribeCommand
+@{
+    Layout = null;
+}
+
+<form method="post" id="create-form">
+
+    <div class="row g-3">
+        <div class="col-sm">
+            @Html.TextBoxFor(x=> x.Name, "", new{@class ="form-control", @placeholder=Html.DisplayNameFor(x=>x.Name)})
+            @Html.ValidationMessageFor(x=>x.Name, "", new{@class="text-danger"})
+        </div>
+    </div>
+    <div>
+
+    @* </div>
+    <<div class="row g-3">
+        <div class="col-sm">
+            <button type="submit" class="btn btn-success">Submit</button>
+            <a class="btn btn-secondary" href="describe/index">Cancel</a>
+        </div>
+    </div> *@
+</form>
+
+@section Scripts {
+    @*@{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }*@
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

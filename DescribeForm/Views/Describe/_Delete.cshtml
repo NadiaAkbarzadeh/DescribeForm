@@ -1,0 +1,38 @@
+﻿@using DescribeForm.Models.Command
+@model DeleteDescribeCommand
+
+@{
+    Layout = null;
+}
+
+<div>
+    <form>
+        <div class="row g-3">
+            <div class="col-sm">
+                @Html.TextBoxFor(x => x.Id, "Describe Id You Want to Delete",new{@class ="form-control" , @placeholder=Html.DisplayNameFor(x=>x.Id)})
+                @Html.ValidationMessageFor(x => x.Id, "", new{@class="text-danger" ,@readonly=true})
+                </div>
+            </div>
+    </form>
+
+        <form method="post" >
+            @Html.HiddenFor(x=>x.Id)
+        <div class="row g-3">
+            <div class="col-sm">
+                <button type="submit" class="btn btn-success">Delete</button>
+                <a class="btn btn-secondary" href="describe/index">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @*@{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }*@
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    @*<script>
+        $('.datepicker').datepicker();
+    </script>*@
+}

@@ -1,0 +1,217 @@
+﻿@model IEnumerable<DescribeForm.Models.Describe>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<p>
+    <a href="#" onclick="addDescribe()">
+        <h1>فرم تعریف شرح ثابت</h1>
+    </a>
+</p>
+
+<style>
+    .fa.button {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+        .fa.button:hover {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+</style>
+
+<table class="table" id="table-describes">
+    <thead>
+        <tr>
+          @*   <th>
+                @Html.DisplayNameFor(model => model.)
+            </th>
+            <th></th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @(await Html.PartialAsync("_tableBody", Model))
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+
+        //$('[data-toggle="tooltip"]').tooltip();
+
+        function addDescribe() {
+
+            var dialog = bootbox.confirm(
+                {
+                    size: 'xl',
+                    title: "شرح ",
+                    message: "Loading ...",
+                    buttons: {
+                        confirm: {
+                            label: "Submit",
+                            className: "btn-success"
+                        },
+                        cancel: {
+                            label: "Cancel",
+                            className: "btn-danger"
+                        }
+                    },
+                    callback: function (result) {
+                        if (result === true) {
+
+                            $("#create-form").removeData("unobtrusiveValidation");
+                            $.validator.unobtrusive.parse($("#create-form"));
+                            if (! $("#create-form").valid()){
+                                $("#create-form").validate();
+                                return false;
+                            }
+
+                            var formData = $("#create-form").serializeArray();
+                            $.ajax({
+                                url: "/Describe/Create",
+                                method: "Post",
+                                data: formData,
+                                success: function (data) {
+                                    dialog.modal("hide");
+
+                                    $('tbody').html(data);
+
+                                },
+                                error: function (result) {
+
+                                }
+                            });
+
+
+                            return false;
+                        }
+                    }
+                }
+            );
+            dialog.init(function () {
+
+                $.ajax({
+                    url: "/Describe/Create",
+                    method: "Get",
+                    success: function (data) {
+                        dialog.find(".bootbox-body").html(data);
+                    },
+                    error: function (result) {
+
+                    }
+                });
+
+            });
+        }
+
+
+        function edit(id) {
+
+            var dialog = bootbox.confirm(
+                {
+                    size: 'xl',
+                    title: "Add Describe",
+                    message: "Loading ...",
+                    buttons: {
+                        confirm: {
+                            label: "Submit",
+                            className: "btn-success"
+                        },
+                        cancel: {
+                            label: "Cancel",
+                            className: "btn-danger"
+                        }
+                    },
+                    callback: function (result) {
+                        if (result === true) {
+
+                            $("#edit-form").removeData("unobtrusiveValidation");
+                            $.validator.unobtrusive.parse($("#edit-form"));
+                            if (!$("#edit-form").valid()) {
+                                $("#edit-form").validate();
+                                return false;
+                            }
+
+                            var formData = $("#edit-form").serializeArray();
+                            $.ajax({
+                                url: "/Describe/Edit",
+                                method: "Post",
+                                data: formData,
+                                success: function (data) {
+                                    dialog.modal("hide");
+
+                                    $('tbody').html(data);
+
+                                },
+                                error: function (result) {
+
+                                }
+                            });
+
+
+                            return false;
+                        }
+                    }
+                }
+            );
+            dialog.init(function () {
+
+                $.ajax({
+                    url: "/Describe/Edit/" + id,
+                    method: "Get",
+                    success: function (data) {
+                        dialog.find(".bootbox-body").html(data);
+                    },
+                    error: function (result) {
+
+                    }
+                });
+
+            });
+        }
+
+
+        function deleteDescribe(id , Name, e) {
+
+            bootbox.confirm(
+                {
+                    size: 'small',
+                    buttons: {
+                        confirm: {
+                            label: "Yes",
+                            className: "btn-success"
+                        },
+                        cancel: {
+                            label: "No",
+                            className: "btn-danger"
+                        }
+                    },
+                    message: 'آیا از حذف این اطلاعات مطمین هستید؟' + Name + ' ' + '?',
+                    callback: function (result) {
+                        if (result === true) {
+
+                            $.ajax({
+                                url: "/Describe/Delete/" + id,
+                                method: "Post",
+                                success: function (result) {
+                                    //window.location.reload();
+                                    $(e.target).closest('tr').remove();
+                                },
+                                error: function (result) {
+                                    debugger;
+                                }
+                            });
+                        }
+
+                    }
+                }
+            );
+        }
+
+
+    </script>
+}
